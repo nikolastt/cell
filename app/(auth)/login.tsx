@@ -1,12 +1,15 @@
 import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "expo-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { onLogin, onRegister } = useAuth();
+  const { onLogin, onRegister, authState } = useAuth();
+
+  const router = useRouter();
 
   useEffect(() => {}, []);
 
@@ -15,6 +18,8 @@ const Login = () => {
 
     if (result && result.error) {
       alert(result.msg);
+    } else {
+      router.push("/(tabs)/");
     }
   };
 

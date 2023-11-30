@@ -46,10 +46,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="favorites"
+        name="logout"
         options={{
-          title: "Favoritos",
-          tabBarIcon: ({ color }) => <TabBarIcon name="heart" color={color} />,
+          title: "Logout",
+          tabBarIcon: ({ color }) => <TabBarIcon name="exit" color={color} />,
         }}
       />
     </Tabs>

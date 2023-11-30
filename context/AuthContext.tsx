@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
 import { setItemAsync, getItemAsync, deleteItemAsync } from "expo-secure-store";
+import { router } from "expo-router";
 
 interface AuthProps {
   authState?: { token: string | null; authenticated: boolean | null };
@@ -32,8 +33,9 @@ export const AuthProvider = ({ children }: any) => {
     const loadToken = async () => {
       const token = await getItemAsync(TOKEN_KEY);
 
+      console.log(token, "token");
+
       if (token) {
-        console.log("auth");
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         setAuthState({
@@ -66,8 +68,6 @@ export const AuthProvider = ({ children }: any) => {
         { email, password }
       );
 
-      console.log(" ~ file: login result", result.data);
-
       setAuthState({
         token: result.data.token,
         authenticated: true,
@@ -91,6 +91,8 @@ export const AuthProvider = ({ children }: any) => {
 
     axios.defaults.headers.common["Authorization"] = "";
 
+    router.push("/(auth)/login");
+
     setAuthState({
       token: null,
       authenticated: false,
@@ -101,7 +103,7 @@ export const AuthProvider = ({ children }: any) => {
     onRegister: register,
     onLogin: login,
     onLogout: logout,
-    authState,
+    authState: authState,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

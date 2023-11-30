@@ -11,6 +11,7 @@ import { useColorScheme } from "react-native";
 
 import "../global.css";
 import { AuthProvider, useAuth } from "../context/AuthContext";
+import { getItemAsync } from "expo-secure-store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,16 +62,16 @@ function RootLayoutNav() {
   useEffect(() => {
     const inTabGroups = segments[0] === "(auth)";
 
-    console.log(authState?.authenticated, "auth");
+    console.log(authState?.authenticated, "authenticate");
 
-    if (authState?.authenticated && !inTabGroups) {
+    if (authState?.authenticated) {
       router.replace("/(tabs)/");
       setloading(false);
     } else if (!authState?.authenticated) {
       router.replace("/(auth)/login");
       setloading(false);
     }
-  }, []);
+  }, [authState]);
 
   return (
     <AuthProvider>
