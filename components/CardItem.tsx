@@ -28,18 +28,23 @@ const CardItem = ({ product }: CardItemProps) => {
             <Ionicons name="heart" color="white" size={20} />
           </TouchableOpacity>
         </View>
-
         <Image
           source={{ uri: product.images[0] }}
-          style={{ resizeMode: "contain" }}
-          className="w-full rounded-lg h-[150px] self-center"
+          style={{ resizeMode: "cover" }}
+          className="min-w-full h-40 "
         />
 
-        <Text className="text-white">{product.title}</Text>
-        <View className="text-white flex-row">
-          <Text className="text-sm text-white self-end font-thin mr-1">R$</Text>
+        <View className="p-3">
+          <Text className="text-white">{product.title}</Text>
+          <View className="text-white flex-row">
+            <Text className="text-sm text-white self-end font-thin mr-1">
+              R$
+            </Text>
 
-          <Text className="text-xl font-bold text-white">{product.price}</Text>
+            <Text className="text-xl font-bold text-white">
+              {product.price}
+            </Text>
+          </View>
         </View>
       </Pressable>
     </Link>
@@ -51,10 +56,10 @@ export default CardItem;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#5298fc",
     margin: 12,
+    backgroundColor: "#1c2b3a",
     borderRadius: 16,
+    overflow: "hidden",
     gap: 12,
     position: "relative",
   },

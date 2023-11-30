@@ -5,11 +5,12 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import { Slot, SplashScreen, Stack, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 
 import "../global.css";
+import { AuthProvider, useAuth } from "../context/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,27 +52,54 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const { authState, onLogout } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  const [loading, setloading] = useState(true);
+
+  useEffect(() => {
+    const inTabGroups = segments[0] === "(auth)";
+
+    console.log(authState?.authenticated, "auth");
+
+    if (authState?.authenticated && !inTabGroups) {
+      router.replace("/(tabs)/");
+      setloading(false);
+    } else if (!authState?.authenticated) {
+      router.replace("/(auth)/login");
+      setloading(false);
+    }
+  }, []);
+
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="(product)"
-          options={{
-            headerShown: false,
-            presentation: "modal",
-            animation: "default",
-            animationDuration: 5000,
-          }}
-        />
-        <Stack.Screen
-          name="modal"
-          options={{
-            presentation: "modal",
-            animation: "slide_from_bottom",
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        {loading ? (
+          <Slot />
+        ) : (
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(product)"
+              options={{
+                headerShown: false,
+                presentation: "modal",
+                animation: "default",
+                animationDuration: 5000,
+              }}
+            />
+            <Stack.Screen
+              name="modal"
+              options={{
+                presentation: "modal",
+                animation: "slide_from_bottom",
+              }}
+            />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack>
+        )}
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

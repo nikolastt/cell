@@ -12,7 +12,7 @@ export default function Products() {
     const getAll = async () => {
       try {
         const products = await getAllProducts();
-        setAllProducts(products.products);
+        setAllProducts(products);
       } catch (err) {
         console.log(err);
       }

@@ -4,6 +4,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Button,
   StyleSheet,
 } from "react-native";
 import React, { useLayoutEffect, useEffect, useState } from "react";
@@ -119,6 +120,12 @@ export default function Product() {
         <Text className="text-xl font-bold text-white">Descrição</Text>
         <Text className="text-white">{product?.description}</Text>
       </View>
+
+      <TouchableOpacity style={styles.button}>
+        <Text className="text-white text-lg font-bold">
+          Adicionar aos favoritos
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -130,5 +137,14 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 8,
     overflow: "hidden",
+  },
+
+  button: {
+    marginTop: 12,
+    backgroundColor: "#282c34",
+    padding: 12,
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 8,
   },
 });
